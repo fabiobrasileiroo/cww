@@ -20,7 +20,7 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  checkSession: async () => {},
+  checkSession: async () => {}, // valor inicial "dummy"
 })
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkSession = async () => {
     try {
       setLoading(true)
-      const res = await fetch("/api/auth/session")
+      const res = await fetch("/api/auth/session", { cache: "no-store" })
       if (res.ok) {
         const data = await res.json()
         setUser(data.user)
@@ -50,7 +50,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkSession()
   }, [])
 
-  return <AuthContext.Provider value={{ user, loading, checkSession }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, loading, checkSession }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export const useAuth = () => useContext(AuthContext)

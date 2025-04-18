@@ -8,9 +8,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import Link from "next/link"
+import { useAuth } from "@/components/auth-provider"
 
 export default function LoginPage() {
   const router = useRouter()
+  const { checkSession } = useAuth()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
 
@@ -37,6 +39,7 @@ export default function LoginPage() {
         setError(data.error || "Erro ao autenticar")
       } else {
         // O cookie já foi setado no Response do handler
+        await checkSession() // força atualização do contexto
         router.push("/")
       }
     } catch {
@@ -103,3 +106,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

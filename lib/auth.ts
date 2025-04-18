@@ -4,9 +4,10 @@ import { jwtVerify, SignJWT } from "jose"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import type { Role } from "@prisma/client"
+import { jwtSecret } from "@/lib/config/config"
 
-// Chave secreta para JWT - em produção, use uma variável de ambiente
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "seu_segredo_super_secreto_aqui")
+const JWT_SECRET = jwtSecret
+
 
 export type User = {
   id: string
