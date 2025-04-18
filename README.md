@@ -26,7 +26,7 @@
 ## RNs (Regras de negócio)
 > obs: descreve um aspecto do negócio, definindo ou restringindo tanto sua estrutura quanto seu comportamento
 
-- [x] RN01: Um evento criado de ser aprovado apenas por um admin.
+- [] RN01: Um evento criado pelo usuário deve ser aprovado apenas por um admin/root.
 
 
 ## RNFs (requisitos não-funcionais)
