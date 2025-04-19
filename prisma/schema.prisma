@@ -11,22 +11,24 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  image         String?
-  isWorking     Boolean?
-  role          Role      @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  image     String?
+  isWorking Boolean?
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  passwordResetToken   String?   // token hash (opcional)
+  passwordResetToken   String? // token hash (opcional)
   passwordResetExpires DateTime? // data de expiração (opcional)
 
-  events        Event[]
-  comments      Comment[]
-  sessions      Session[]
+  events   Event[]
+  comments Comment[]
+  sessions Session[]
+
+  Project Project[]
 }
 
 model Session {
@@ -38,29 +40,46 @@ model Session {
 }
 
 model Event {
-  id               String        @id @default(cuid())
-  title            String
-  slug             String        @unique
-  description      String
-  longDescription  String?       @db.Text
-  location         String
-  date             DateTime
-  time             String
-  contact          String
-  prize            String
-  image            String?
-  category         String
-  categoryColor    String
-  secondCategory   String?
+  id                  String      @id @default(cuid())
+  title               String
+  slug                String      @unique
+  description         String
+  longDescription     String?     @db.Text
+  location            String
+  date                DateTime
+  time                String
+  contact             String
+  prize               String
+  image               String?
+  category            String
+  categoryColor       String
+  secondCategory      String?
   secondCategoryColor String?
-  status           EventStatus   @default(PENDING)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  
-  authorId         String
-  author           User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  
-  comments         Comment[]
+  status              EventStatus @default(PENDING)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments Comment[]
+
+  Project Project[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  award       String?
+  image       String?
+  createdAt   DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  eventId String?
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -69,17 +88,16 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   likes     Int      @default(0)
-  
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  
-  parentId  String?
-  isReply   Boolean  @default(false)
-}
 
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  eventId String
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  parentId String?
+  isReply  Boolean @default(false)
+}
 
 enum Role {
   USER

@@ -240,7 +240,7 @@ export default function Sidebar() {
                 </div>
                 <div className="mt-2 space-y-1">
                   <Link
-                    href="/perfil"
+                    href="/configuracoes"
                     className="flex items-center gap-3 px-3 py-2 text-sm rounded-md hover:bg-gray-800 text-gray-300 transition-colors"
                   >
                     <Settings size={16} />
