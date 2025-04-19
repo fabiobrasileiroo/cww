@@ -72,7 +72,6 @@ export default function UsersTable({ users }: UsersTableProps) {
 
   function handleDelete() {
     // chame sua API: DELETE /api/users/[id]
-    console.log("deletar", selectedUser?.id)
     setOpenDialog(false)
     setOpenSheet(false)
   }
@@ -80,7 +79,6 @@ export default function UsersTable({ users }: UsersTableProps) {
   function handleRoleChange(newRole: User["role"]) {
     if (!selectedUser) return
     // chame sua API: PATCH /api/users/[id] { role: newRole }
-    console.log("mudar role", selectedUser.id, newRole)
     setSelectedUser({ ...selectedUser, role: newRole })
   }
 

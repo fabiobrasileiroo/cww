@@ -6,7 +6,6 @@ export const isProd = process.env.NODE_ENV === "production"
 const rawJwtSecret =
   isProd ? process.env.JWT_SECRET :
   process.env.JWT_SECRET_DEVELOPMENT
-console.log('isjwtDev?',isProd)
 if (!rawJwtSecret) {
   throw new Error("JWT secret is not defined for the current environment.")
 }

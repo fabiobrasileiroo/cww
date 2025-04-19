@@ -154,7 +154,6 @@ export async function updateSession() {
       role: true,
     },
   })
-  console.log("🚀 ~ updateSession ~ user:", user)
 
   if (!user) {
     logout()

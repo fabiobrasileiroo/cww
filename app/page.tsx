@@ -22,7 +22,6 @@ export default async function Home() {
       },
     },
   })
-  console.log("🚀 ~ Home ~ events:", events)
 
   // Dados simulados para a equipe
   const teamMembers = [

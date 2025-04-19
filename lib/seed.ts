@@ -16,7 +16,6 @@ async function main() {
       role: Role.ROOT,
     },
   })
-  console.log({ root })
 
   // Criar usuário admin
   const adminPassword = await bcrypt.hash("admin123", 10)
@@ -30,7 +29,6 @@ async function main() {
       role: Role.ADMIN,
     },
   })
-  console.log({ admin })
 
   // Criar usuário comum
   const userPassword = await bcrypt.hash("user123", 10)
@@ -44,7 +42,6 @@ async function main() {
       role: Role.USER,
     },
   })
-  console.log({ user })
 
   // Criar alguns eventos de exemplo
   const events = [
@@ -112,7 +109,6 @@ async function main() {
     })
   }
 
-  console.log("Seed concluído com sucesso!")
 }
 
 main()

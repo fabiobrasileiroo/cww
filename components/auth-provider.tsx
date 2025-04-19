@@ -34,7 +34,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await fetch("/api/auth/session", { cache: "no-store" })
       if (res.ok) {
         const data = await res.json()
-        console.log("🚀 ~ checkSession ~ data:", data)
         setUser(data.user)
       } else {
         setUser(null)

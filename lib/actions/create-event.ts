@@ -44,7 +44,6 @@ export async function createEvent(formData: FormData) {
 
   // 3. Faz o upload para Imgbb/FreeImage
   const imageUrl = await uploadImage(imageBase64);
-  console.log("🚀 ~ createEvent ~ imageUrl:", imageUrl)
   if (!imageUrl) {
     throw new Error("Falha ao enviar a imagem para o serviço de hospedagem.");
   }
@@ -88,7 +87,6 @@ export async function createEvent(formData: FormData) {
         authorId,              // ← aqui: o ID que existe no seu User Table
       },
     });
-    console.log("🚀 ~ createEvent ~ prisma:", prisma)
 
     revalidatePath("/eventos")
     revalidatePath("/meus-eventos")

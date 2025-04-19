@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
     try {
       const verified = await jwtVerify(token, JWT_SECRET)
       const payload = verified.payload as any
-      console.log("🚀 ~ middleware ~ payload:", payload)
 
       isAuthenticated = true
       isAdmin = payload.role === "ADMIN" || payload.role === "ROOT"
@@ -43,7 +42,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  console.log('admin?',adminRoutes.some((route) => path.startsWith(route)) && (!isAdmin || !isRoot))
   // Verificar rotas de administrador
   if (adminRoutes.some((route) => path.startsWith(route)) && !isAdmin) {
     return NextResponse.redirect(new URL("/", request.url))

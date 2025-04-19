@@ -29,7 +29,6 @@ export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuth()
-  console.log("🚀 ~ Sidebar ~ user:", user)
 
   const isAdmin = user?.role === "ADMIN" || user?.role === "ROOT"
   const isRoot = user?.role === "ROOT"
