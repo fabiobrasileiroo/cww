@@ -30,22 +30,76 @@ export async function POST(req: NextRequest) {
   })
 
   // 4) Monta URL de front-end
-  const urlFront = 
+  const urlFront =
     `${process.env.NEXT_PUBLIC_APP_URL}/new-password?token=${resetToken}&email=${encodeURIComponent(email)}`
 
   // 5) Dispara e‑mail
   const html = `
-    <div style="font-family: sans-serif; line-height:1.5">
-      <h2>Redefinição de Senha</h2>
-      <p>Você solicitou a redefinição de senha. Clique no botão abaixo:</p>
-      <a href="${urlFront}" style="
-        display:inline-block; padding:12px 24px;
-        background:#FF1FFF; color:#fff; border-radius:4px;
-        text-decoration:none;
-      ">Redefinir Senha</a>
-      <p>Link válido por 1 hora.</p>
-    </div>
-  `
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;padding:20px 0;">
+  <tr>
+    <td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
+        <!-- Cabeçalho com logo -->
+        <tr>
+          <td align="center" style="padding:20px;background:#320B4E;">
+            <img
+              src="https://i.ibb.co/dx7tbWz/cww-logo.png"
+              alt="Next Payment"
+              width="120"
+              style="display:block; border:0;"
+            />
+          </td>
+        </tr>
+
+        <!-- Corpo do e‑mail -->
+        <tr>
+          <td style="padding:30px;font-family:Arial, sans-serif;line-height:1.5;color:#333;">
+            <h2 style="color:#320B4E;margin-top:0;">Redefinição de Senha</h2>
+            <p>Olá,</p>
+            <p>Você solicitou a redefinição de senha da sua conta. Clique no botão abaixo para prosseguir:</p>
+
+            <!-- Botão centralizado -->
+            <table cellpadding="0" cellspacing="0" width="100%" style="margin:20px 0;">
+              <tr>
+                <td align="center">
+                  <a
+                    href="${urlFront}"
+                    style="
+                      display:inline-block;
+                      padding:12px 24px;
+                      background-color:#FF1FFF;
+                      color:#ffffff;
+                      text-decoration:none;
+                      border-radius:5px;
+                      font-weight:bold;
+                    "
+                  >
+                    Redefinir Senha
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size:14px;color:#777;">
+              Esse link é válido por 1 hora. Se você não solicitou essa ação, ignore este e‑mail.
+            </p>
+
+            <p style="margin-top:30px;">Atenciosamente,<br/><strong>Next Payment</strong></p>
+          </td>
+        </tr>
+
+        <!-- Rodapé opcional -->
+        <tr>
+          <td align="center" style="padding:15px;font-size:12px;color:#aaa;">
+            © ${new Date().getFullYear()} Next Payment. Todos os direitos reservados.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+`;
+
   await transporter.sendMail({
     from: process.env.SMTP_USER,
     to: email,
