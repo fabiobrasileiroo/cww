@@ -170,7 +170,7 @@ export default function UsersTable({ users }: UsersTableProps) {
 
       {/* Drawer de perfil */}
       <Sheet open={openSheet} onOpenChange={setOpenSheet}>
-        <SheetContent position="right" size="lg">
+        <SheetContent  size="lg">
           <SheetHeader>
             <SheetTitle>Perfil de Usuário</SheetTitle>
           </SheetHeader>

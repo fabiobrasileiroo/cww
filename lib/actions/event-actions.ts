@@ -213,3 +213,47 @@ function getCategoryColor(category: string): string {
 
   return colors[category.toLowerCase()] || "gray"
 }
+
+export async function approveEvent(eventId: string) {
+  try {
+    await prisma.event.update({
+      where: { id: eventId },
+      data: { status: 'APPROVED' },
+    });
+
+    revalidatePath('/dashboard/events'); // ou a página onde a lista é exibida
+    return { success: true };
+  } catch (error) {
+    console.error('Erro ao aprovar evento:', error);
+    return { success: false, error: 'Erro ao aprovar evento.' };
+  }
+}
+
+export async function rejectEvent(eventId: string) {
+  try {
+    await prisma.event.update({
+      where: { id: eventId },
+      data: { status: 'REJECTED' },
+    });
+
+    revalidatePath('/dashboard/events'); // ou a página onde a lista é exibida
+    return { success: true };
+  } catch (error) {
+    console.error('Erro ao rejeitar evento:', error);
+    return { success: false, error: 'Erro ao rejeitar evento.' };
+  }
+}
+
+export async function revertEventStatus(eventId: string) {
+  try {
+    await prisma.event.update({
+      where: { id: eventId },
+      data: { status: 'PENDING' },
+    });
+    revalidatePath('/dashboard/events');
+    return { success: true };
+  } catch (error) {
+    console.error('Erro ao reverter status do evento:', error);
+    return { success: false, error: 'Erro ao reverter status do evento.' };
+  }
+}

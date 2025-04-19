@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { jwtVerify } from "jose"
+import { jwtSecret } from "./lib/config/config"
 
 // Chave secreta para JWT - deve ser a mesma usada em lib/auth.ts
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || "seu_segredo_super_secreto_aqui")
+const JWT_SECRET = jwtSecret 
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("auth-token")?.value
@@ -16,6 +17,7 @@ export async function middleware(request: NextRequest) {
     try {
       const verified = await jwtVerify(token, JWT_SECRET)
       const payload = verified.payload as any
+      console.log("🚀 ~ middleware ~ payload:", payload)
 
       isAuthenticated = true
       isAdmin = payload.role === "ADMIN" || payload.role === "ROOT"
@@ -41,6 +43,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
+  console.log('admin?',adminRoutes.some((route) => path.startsWith(route)) && (!isAdmin || !isRoot))
   // Verificar rotas de administrador
   if (adminRoutes.some((route) => path.startsWith(route)) && !isAdmin) {
     return NextResponse.redirect(new URL("/", request.url))

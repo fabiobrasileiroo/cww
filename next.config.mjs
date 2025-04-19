@@ -13,9 +13,6 @@ try {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,        // ativa Server Actions
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -26,6 +23,9 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
+    serverActions: {
+      bodySizeLimit: '32mb',
+    },
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,

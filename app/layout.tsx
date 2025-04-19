@@ -4,6 +4,8 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import Sidebar from "@/components/sidebar"
 import TopBar from "@/components/top-bar"
+import { Toast } from "@/components/ui/toast"
+import { Toaster } from "sonner"
 import { ThemeProvider } from "@/components/theme-provider"
 import { AuthProvider } from "@/components/auth-provider"
 
@@ -23,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.className} bg-[#121212] text-white min-h-screen`}>
+        <Toaster />
         <AuthProvider>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
             <div className="flex">
