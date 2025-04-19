@@ -1,3 +1,5 @@
+
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -5,11 +7,11 @@ import { Calendar, Clock, MapPin, Award } from "lucide-react"
 import Link from "next/link"
 import prisma from "@/lib/prisma"
 
-export default async function EventosAprovaPage() {
+export default async function EventosAprovadosPage() {
   // Buscar eventos aprovados do banco de dados
   const pendingEvents = await prisma.event.findMany({
     where: {
-      status: "PENDING",
+      status: "APPROVED",
     },
     orderBy: {
       date: "asc",
@@ -86,7 +88,7 @@ export default async function EventosAprovaPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Eventos Pendentes</h1>
+        <h1 className="text-3xl font-bold">Eventos Aprovados</h1>
         <Link href="/admin">
           <Button variant="outline">Voltar ao Painel</Button>
         </Link>
@@ -146,7 +148,7 @@ export default async function EventosAprovaPage() {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-end gap-3">
+              {/* <CardFooter className="flex justify-end gap-3">
                 <Button variant="outline" className="border-red-500 text-red-500 hover:bg-red-950 hover:text-red-400">
                   Rejeitar
                 </Button>
@@ -154,7 +156,7 @@ export default async function EventosAprovaPage() {
                   <Button variant="outline">Revisar</Button>
                 </Link>
                 <Button className="bg-green-600 hover:bg-green-700">Aprovar</Button>
-              </CardFooter>
+              </CardFooter> */}
             </Card>
           ))}
         </div>
