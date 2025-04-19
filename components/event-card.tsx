@@ -66,7 +66,7 @@ export default function EventCard({ event }: EventProps) {
         <div className="mb-3">
           <div className="flex justify-between items-start mb-1">
             <h3 className="text-xl font-bold">{event.title}</h3>
-            {getStatusBadge()}
+            {/* {getStatusBadge()} */}
           </div>
           <div className="flex gap-2">
             <span className={`text-xs px-2 py-1 rounded ${getCategoryColorClass(event.categoryColor)}`}>

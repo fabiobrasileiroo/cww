@@ -2,17 +2,36 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { AlertCircle, Calendar, CheckCircle, Clock, Users, XCircle } from "lucide-react"
+import prisma from "@/lib/prisma"
 
-export default function AdminPage() {
-  // Dados simulados para o dashboard
+export default async function AdminPage() {
+  const totalUsers = await prisma.user.count()
+
+  // Contagem por status de eventos
+  const [pendingEvents, approvedEvents, rejectedEvents] = await Promise.all([
+    prisma.event.count({ where: { status: "PENDING" } }),
+    prisma.event.count({ where: { status: "APPROVED" } }),
+    prisma.event.count({ where: { status: "REJECTED" } }),
+  ])
+
+  // Eventos futuros
+  const upcomingEvents = await prisma.event.count({
+    where: {
+      date: {
+        gte: new Date(), // pega eventos com data a partir de hoje
+      },
+      status: "APPROVED", // opcional: só considerar aprovados
+    },
+  })
+
+  // Objeto final
   const stats = {
-    pendingEvents: 3,
-    approvedEvents: 24,
-    rejectedEvents: 5,
-    totalUsers: 156,
-    upcomingEvents: 8,
+    totalUsers,
+    pendingEvents,
+    approvedEvents,
+    rejectedEvents,
+    upcomingEvents,
   }
-
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Painel Administrativo</h1>

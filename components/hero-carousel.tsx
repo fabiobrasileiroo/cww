@@ -12,7 +12,7 @@ interface CarouselItem {
   isView?: boolean
   image: string
   link?: string
-  descriptionLink: string
+  descriptionLink?: string
 }
 
 interface HeroCarouselProps {
