@@ -1,0 +1,120 @@
+import prisma from "@/lib/prisma";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
+import SocialMedia from "@/components/ui/socila-medias";
+import { Badge } from "@/components/ui/badge";
+import ProjectCard from "@/components/ui/card-projeto";
+import AddProjectCard from "@/components/ui/card-adicionar-projeto";
+
+async function Perfil() {
+  const perfil = await prisma.user.findUnique({
+    where: { id: "cm9n8mjtv0000ij4vnojc4ehg" },
+    select: {
+      name: true,
+    },
+  });
+  console.log("perfil info", perfil);
+
+  const getCategoryBadge = (tipo: string, nome: string) => {
+    if (!tipo) return null;
+
+    switch (tipo) {
+      case "front":
+        return <Badge className="bg-green-600 mr-4">{nome}</Badge>;
+      case "dados":
+        return <Badge className="bg-yellow-600 mr-4">{nome}</Badge>;
+      case "security":
+        return <Badge className="bg-red-600 mr-4">{nome}</Badge>;
+      case "web3":
+        return <Badge className="bg-blue-600 mr-4">{nome}</Badge>;
+      default:
+        return null;
+    }
+  };
+
+  perfil.social = [
+    { type: "whatsapp", link: "https://whatsapp.com" },
+    { type: "linkedin", link: "https://linkedin.com" },
+    { type: "github", link: "https://github.com" },
+  ];
+
+  perfil.descricao =
+    "Lorem ipsum dolor sit amet consectetur. Faucibus dui purus lectus id suspendisse semper in risus nascetur. Consectetur a fusce gravida lorem pulvinar in vitae. Enim interdum ac lobortis nec in. Arcu nascetur purus vitae at egestas gravida sit tellus. Fermentum convallis vitae id ac. Sem id lacus lacus phasellus tellus dolor. Orci et mi mauris vitae et et facilisis.";
+
+  perfil.tags = [
+    { nome: "Typescript", tipo: "front" },
+    { nome: "React", tipo: "front" },
+    { nome: "Python", tipo: "dados" },
+    { nome: "Ai", tipo: "dados" },
+    { nome: "Cyber security", tipo: "security" },
+    { nome: "Web3", tipo: "web3" },
+    { nome: "Solidity", tipo: "web3" },
+  ];
+
+  perfil.projetos = [
+    {
+      nome: "Tinder decavalos",
+      events: "Hackathon IBAMA",
+      rank: "1° Lugar",
+      img: "https://i.ibb.co/N28XMtVn/VQyr-PPyh-FGd-V2-BJtlcw-Dphesnx-ERD6-SLWv-Gt-ARyg-LDVNSs-Xh-FF0kz-G-y-Xv-Lyi-ARZb-KIG3-VYF-CIb-F4-B.webp",
+      link: "https://github.com",
+    },
+    {
+      nome: "Truco do Doge",
+      events: "Hackathon Blaze",
+      rank: "Participante",
+      img: "https://i.ibb.co/N28XMtVn/VQyr-PPyh-FGd-V2-BJtlcw-Dphesnx-ERD6-SLWv-Gt-ARyg-LDVNSs-Xh-FF0kz-G-y-Xv-Lyi-ARZb-KIG3-VYF-CIb-F4-B.webp",
+      link: "https://github.com",
+    },
+    {
+      nome: "Rilha de carecas",
+      events: "Hackathon ministerio da inculsão",
+      rank: "2° Lugar",
+      img: "https://i.ibb.co/N28XMtVn/VQyr-PPyh-FGd-V2-BJtlcw-Dphesnx-ERD6-SLWv-Gt-ARyg-LDVNSs-Xh-FF0kz-G-y-Xv-Lyi-ARZb-KIG3-VYF-CIb-F4-B.webp",
+      link: "https://github.com",
+    },
+  ];
+
+  return (
+    <main>
+      <div className="flex">
+        {/* image and social medias */}
+        <div className=" flex flex-col items-center ">
+          <Image
+            className="rounded-full h-[200px] mim-w-[400px] mr-8"
+            alt={`imagem de perfil do ${perfil?.name}`}
+            src="https://i.ibb.co/N28XMtVn/VQyr-PPyh-FGd-V2-BJtlcw-Dphesnx-ERD6-SLWv-Gt-ARyg-LDVNSs-Xh-FF0kz-G-y-Xv-Lyi-ARZb-KIG3-VYF-CIb-F4-B.webp"
+            width={400}
+            height={400}
+          />
+          <p className="text-xl mb-2 mt-4 font-bold ">{perfil?.name}</p>
+          <div className="flex flex-row">
+            {perfil.social.map((social) => (
+              <SocialMedia typeOfSocial={social.type} link={social.link} />
+            ))}
+          </div>
+        </div>
+        {/* Descricao e tags */}
+        <div>
+          <p>{perfil.descricao}</p>
+          <div className="mt-4 ">
+            {perfil.tags.map((tag) => getCategoryBadge(tag.tipo, tag.nome))}
+          </div>
+        </div>
+      </div>
+      {/* desafios feitos em hackathons */}
+      <section>
+        <h1 className="text-3xl font-bold mb-6">Criar Novo Evento</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full justify-items-center">
+          {perfil.projetos.map((projeto) => (
+            <ProjectCard key={projeto.nome} {...projeto} />
+          ))}
+
+          <AddProjectCard />
+        </div>
+      </section>
+    </main>
+  );
+}
+
+export default Perfil;

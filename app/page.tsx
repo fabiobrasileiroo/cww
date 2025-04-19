@@ -1,7 +1,7 @@
-import EventCard from "@/components/event-card"
-import TeamMember from "@/components/team-member"
-import HeroCarousel from "@/components/hero-carousel"
-import prisma from "@/lib/prisma"
+import EventCard from "@/components/event-card";
+import TeamMember from "@/components/team-member";
+import HeroCarousel from "@/components/hero-carousel";
+import prisma from "@/lib/prisma";
 
 export default async function Home() {
   // Buscar eventos aprovados do banco de dados
@@ -20,8 +20,8 @@ export default async function Home() {
         },
       },
     },
-  })
-  console.log("🚀 ~ Home ~ events:", events)
+  });
+  console.log("🚀 ~ Home ~ events:", events);
 
   // events =[
   //   {
@@ -160,7 +160,7 @@ export default async function Home() {
       role: "CEO",
       image: "/placeholder.svg",
     },
-  ]
+  ];
 
   // Dados simulados para o carrossel
   const carouselItems = [
@@ -185,8 +185,22 @@ export default async function Home() {
         "Desafie-se no mundo da tecnologia blockchain e crie aplicações descentralizadas que podem revolucionar o mercado.",
       image: "/event.jpg",
     },
-  ]
+  ];
 
+  const getCategoryBadge = () => {
+    if (!event.status) return null;
+
+    switch (event.status) {
+      case "APPROVED":
+        return <Badge className="bg-green-600">Aprovado</Badge>;
+      case "PENDING":
+        return <Badge className="bg-yellow-600">Pendente</Badge>;
+      case "REJECTED":
+        return <Badge className="bg-red-600">Rejeitado</Badge>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-16">
@@ -207,13 +221,17 @@ export default async function Home() {
       <section>
         <h2 className="text-3xl font-bold mb-6">Sobre Nós</h2>
         <p className="text-gray-300 mb-10">
-          Lorem ipsum dolor sit amet consectetur. Non morbi diam lacus sit volutpat dictum. Nam lectus magna diam ipsum
-          dictumst id dictumst facilisis neque. Mauris blandit viverra tempor nulla at a netus nis. Pellentesque purus
-          varius ut tristique dignissim. Ut pulvinar et ullamcorper aliquam donec mattis. Molestie volutpat integer
-          venenatis volutpate ornare lorem volutpat purus. Rutrum nisi tincidium purus blandit orci nibh eu vel. Libero
-          id mauris sed sed suspendisse id. Pretium lectus amet volutpat massa sit consectetur sem facilisis. Id et
-          porttitor eleifend praesent facilisi vestibulum condimentum. Purus pellentesque in sem nibh. Feugiat libero
-          fusce fames dui vel habitant vulputate. Scelerisque faucibus sapien metus et sed.
+          Lorem ipsum dolor sit amet consectetur. Non morbi diam lacus sit
+          volutpat dictum. Nam lectus magna diam ipsum dictumst id dictumst
+          facilisis neque. Mauris blandit viverra tempor nulla at a netus nis.
+          Pellentesque purus varius ut tristique dignissim. Ut pulvinar et
+          ullamcorper aliquam donec mattis. Molestie volutpat integer venenatis
+          volutpate ornare lorem volutpat purus. Rutrum nisi tincidium purus
+          blandit orci nibh eu vel. Libero id mauris sed sed suspendisse id.
+          Pretium lectus amet volutpat massa sit consectetur sem facilisis. Id
+          et porttitor eleifend praesent facilisi vestibulum condimentum. Purus
+          pellentesque in sem nibh. Feugiat libero fusce fames dui vel habitant
+          vulputate. Scelerisque faucibus sapien metus et sed.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {teamMembers.map((member) => (
@@ -226,19 +244,28 @@ export default async function Home() {
       <section className="relative py-10 px-6 rounded-lg bg-[#1a1a1a]">
         <h2 className="text-3xl font-bold mb-6">Opinião Coworking</h2>
         <p className="text-gray-300 max-w-3xl">
-          Lorem ipsum dolor sit amet consectetur. Sit accumsan aliquam feugiat congue posuere sed odio libero. Aliquet
-          morbi ultrices felis feugiat curabitur laoreet aenean venenatis nec. Pellentesque vitae ullamcorper sed
-          integer quam mauris ipsum sed id. Est leo enim eleifend mauris diam porttitor mauris morbi. Placerat blandit
-          ut quisque vitae maecenas nunc. Gravida cras volutpat non consequat a auctor orci. Habitant amet imperdiet sed
-          blandit tristique sed non at. Laoreet lectus nibh est fames velit elit laoreet congue. Velit ornare sapien
-          porta tincidunt tortor sed. Quis pharetra ut aliquet platea. Porta risus quis nam a lectus dis volutpat.
-          Varius bibendum vitae ut sapien volutpat laoreet interdum posuere blandit. Elementum quis molestie feugiat
-          velit sed cras condimentum sed. Tincidunt dui facilisi ultricies nec. Nibh tellus imperdiet gravida mauris eu
-          eget risus est purus.
+          Lorem ipsum dolor sit amet consectetur. Sit accumsan aliquam feugiat
+          congue posuere sed odio libero. Aliquet morbi ultrices felis feugiat
+          curabitur laoreet aenean venenatis nec. Pellentesque vitae ullamcorper
+          sed integer quam mauris ipsum sed id. Est leo enim eleifend mauris
+          diam porttitor mauris morbi. Placerat blandit ut quisque vitae
+          maecenas nunc. Gravida cras volutpat non consequat a auctor orci.
+          Habitant amet imperdiet sed blandit tristique sed non at. Laoreet
+          lectus nibh est fames velit elit laoreet congue. Velit ornare sapien
+          porta tincidunt tortor sed. Quis pharetra ut aliquet platea. Porta
+          risus quis nam a lectus dis volutpat. Varius bibendum vitae ut sapien
+          volutpat laoreet interdum posuere blandit. Elementum quis molestie
+          feugiat velit sed cras condimentum sed. Tincidunt dui facilisi
+          ultricies nec. Nibh tellus imperdiet gravida mauris eu eget risus est
+          purus.
         </p>
         <div className="absolute bottom-10 right-10 flex items-center gap-3">
           <div className="text-orange-500 w-12 h-12">
-            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path d="M7 22H4C3.44772 22 3 21.5523 3 21V15C3 14.4477 3.44772 14 4 14H7C7.55228 14 8 14.4477 8 15V21C8 21.5523 7.55228 22 7 22Z" />
               <path d="M20 22H17C16.4477 22 16 21.5523 16 21V15C16 14.4477 16.4477 14 17 14H20C20.5523 14 21 14.4477 21 15V21C21 21.5523 20.5523 22 20 22Z" />
               <path d="M16.7519 2.99951C17.1476 2.33126 18.0502 2.11343 18.7185 2.50913C19.3868 2.90483 19.6046 3.80745 19.2089 4.4757L11.2089 17.4757C10.8132 18.144 9.91058 18.3618 9.24233 17.9661C8.57408 17.5704 8.35626 16.6678 8.75196 15.9995L16.7519 2.99951Z" />
@@ -248,5 +275,5 @@ export default async function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
