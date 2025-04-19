@@ -7,8 +7,19 @@ import { slugify } from "@/lib/utils"
 import prisma from "@/lib/prisma"
 import { EventStatus } from "@prisma/client"
 
+import { randomUUID } from "crypto"
+import { writeFile } from "fs/promises"
+import path from "path"
+
 export async function createEvent(prevState: any, formData: FormData) {
   const session = await requireAuth()
+  const imageUrl = formData.get("image") as File
+  const buffer = Buffer.from(await imageUrl.arrayBuffer())
+
+  const filename = `${randomUUID()}-${imageUrl.name.replace(/\s/g, "-")}`
+  const filepath = path.join(process.cwd(), "public/uploads", filename)
+  await writeFile(filepath, buffer)
+
 
   const title = formData.get("title") as string
   const description = formData.get("description") as string
@@ -22,7 +33,7 @@ export async function createEvent(prevState: any, formData: FormData) {
   const categoryColor = getCategoryColor(category)
   const secondCategory = formData.get("secondCategory") as string
   const secondCategoryColor = secondCategory ? getCategoryColor(secondCategory) : null
-  const image = (formData.get("image") as string) || "/placeholder.svg"
+  const image = (`/uploads/${filename}`) || "/placeholder.svg"
 
   if (!title || !description || !location || !date || !time || !contact || !prize || !category) {
     return {
@@ -58,7 +69,7 @@ export async function createEvent(prevState: any, formData: FormData) {
         time,
         contact,
         prize,
-        image,
+        image: imageUrl,
         category,
         categoryColor,
         secondCategory: secondCategory || null,
