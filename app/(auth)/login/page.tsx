@@ -39,7 +39,7 @@ export default function LoginPage() {
         setError(data.error || "Erro ao autenticar")
       } else {
         // O cookie já foi setado no Response do handler
-        await checkSession() // força atualização do contexto
+        await checkSession()
         router.push("/")
       }
     } catch {
@@ -96,7 +96,17 @@ export default function LoginPage() {
             {isLoading ? "Entrando..." : "Entrar"}
           </Button>
 
-          <div className="text-center text-sm">
+          {/* Link para esqueci a senha */}
+          <div className="text-center mt-2">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-blue-400 hover:underline"
+            >
+              Esqueci minha senha
+            </Link>
+          </div>
+
+          <div className="text-center text-sm mt-4">
             <Link href="/cadastro" className="text-blue-400 hover:underline">
               Não tem uma conta? Cadastre-se
             </Link>
@@ -106,4 +116,3 @@ export default function LoginPage() {
     </div>
   )
 }
-
