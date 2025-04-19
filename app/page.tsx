@@ -65,13 +65,15 @@ export default async function Home() {
       title: "Nossa Proposta",
       description:
         "A CowWorking conecta talentos, organizações e investidores por meio de uma plataforma inteligente e gamificada, transformando competições de tecnologia, empreendedorismo e inovação em ecossistemas organizados, inclusivos e lucrativos. Nossa solução utiliza IA e Machine Learning para recomendação de talentos e análises personalizadas, além de gamificação para engajamento e blockchain para garantir transparência nos resultados.",
-      image: "/event.jpg",
+      isView: false,
+      image: "/banner/cww.png",
     },
     {
       id: 2,
       title: "Hackathon de IA",
       description:
         "Participe do maior evento de inteligência artificial do Brasil. Venha desenvolver soluções inovadoras e concorrer a prêmios incríveis.",
+      isView: true,
       image: "/event.jpg",
     },
     {
@@ -79,6 +81,7 @@ export default async function Home() {
       title: "Blockchain Challenge",
       description:
         "Desafie-se no mundo da tecnologia blockchain e crie aplicações descentralizadas que podem revolucionar o mercado.",
+      isView: true,
       image: "/event.jpg",
     },
   ]

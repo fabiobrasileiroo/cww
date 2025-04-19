@@ -8,7 +8,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 interface CarouselItem {
   id: number
   title: string
-  description: string
+  description?: string
+  isView?: boolean
   image: string
 }
 
@@ -52,15 +53,21 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
                 src={item.image || "/placeholder.svg"}
                 alt={item.title}
                 fill
-                className="object-cover brightness-50"
+                className={`transition-all duration-300 ${item.isView === false ? 'object-contain rounded-lg' : 'object-cover brightness-50'
+                  }`}
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-16 max-w-3xl">
-                <h1 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4">{item.title}</h1>
-                <p className="text-sm md:text-base text-gray-200 mb-6">{item.description}</p>
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white w-fit">Ler mais</Button>
-              </div>
+
+              {item.isView === true &&
+                <div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-16 max-w-3xl">
+                    <h1 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4">{item.title}</h1>
+                    <p className="text-sm md:text-base text-gray-200 mb-6">{item.description}</p>
+                    <Button className="bg-orange-500 hover:bg-orange-600 text-white w-fit">Ler mais</Button>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         ))}
