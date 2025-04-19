@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
   const user = await prisma.user.findUnique({
     where: { email },
-    select: { id: true, name: true, email: true, password: true, role: true },
+    select: { id: true, name: true, email: true, password: true, role: true, image: true },
   })
   if (!user) {
     return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })
@@ -36,6 +36,7 @@ export async function POST(req: Request) {
     name: user.name,
     email: user.email,
     role: user.role,
+    image: user.image
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()

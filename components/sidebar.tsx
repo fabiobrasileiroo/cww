@@ -23,12 +23,13 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useAuth } from "@/components/auth-provider"
 import { logoutAction } from "@/lib/actions/auth-actions"
-import  Image from "next/image"
+import Image from "next/image"
 
 export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuth()
+  console.log("🚀 ~ Sidebar ~ user:", user)
 
   const isAdmin = user?.role === "ADMIN" || user?.role === "ROOT"
   const isRoot = user?.role === "ROOT"
@@ -50,7 +51,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile menu button */}
-      <Button variant="ghost" size="icon" className={`fixed top-4 left-4 z-50 md:hidden ${isOpen ? '': ''}`} onClick={toggleSidebar}>
+      <Button variant="ghost" size="icon" className={`fixed top-4 left-4 z-50 md:hidden ${isOpen ? '' : ''}`} onClick={toggleSidebar}>
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </Button>
 
@@ -67,10 +68,10 @@ export default function Sidebar() {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="p-4 border-b border-gray-800">
-            <Link href="/" className={`flex items-center gap-2 ${isOpen ? 'ml-14': ''}`}>
+            <Link href="/" className={`flex items-center gap-2 ${isOpen ? 'ml-14' : ''}`}>
               <div className="text-orange-500 w-10 h-10">
                 <Image src="/cww-logo.svg" quality={100} width={202} height={83} alt="logo cww" />
-             
+
               </div>
               <span className="text-2xl font-bold">CWW</span>
             </Link>
@@ -222,6 +223,7 @@ export default function Sidebar() {
               <>
                 <div className="flex items-center gap-3 px-3 py-2">
                   <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+
                     {user.image ? (
                       <img
                         src={user.image || "/placeholder.svg"}
