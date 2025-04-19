@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:8px;overflow:hidden;">
         <!-- Cabeçalho com logo -->
         <tr>
-          <td align="center" style="padding:20px;background:#320B4E;">
+          <td align="center" style="padding:20px;background:#f4b590;">
             <img
               src="https://i.ibb.co/dx7tbWz/cww-logo.png"
               alt="Next Payment"
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
         <!-- Corpo do e‑mail -->
         <tr>
           <td style="padding:30px;font-family:Arial, sans-serif;line-height:1.5;color:#333;">
-            <h2 style="color:#320B4E;margin-top:0;">Redefinição de Senha</h2>
+            <h2 style="color:#f4b590;margin-top:0;">Redefinição de Senha</h2>
             <p>Olá,</p>
             <p>Você solicitou a redefinição de senha da sua conta. Clique no botão abaixo para prosseguir:</p>
 
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
                     style="
                       display:inline-block;
                       padding:12px 24px;
-                      background-color:#FF1FFF;
+                      background-color:#fe6000;
                       color:#ffffff;
                       text-decoration:none;
                       border-radius:5px;
@@ -84,14 +84,14 @@ export async function POST(req: NextRequest) {
               Esse link é válido por 1 hora. Se você não solicitou essa ação, ignore este e‑mail.
             </p>
 
-            <p style="margin-top:30px;">Atenciosamente,<br/><strong>Next Payment</strong></p>
+            <p style="margin-top:30px;">Atenciosamente,<br/><strong>CWW</strong></p>
           </td>
         </tr>
 
         <!-- Rodapé opcional -->
         <tr>
           <td align="center" style="padding:15px;font-size:12px;color:#aaa;">
-            © ${new Date().getFullYear()} Next Payment. Todos os direitos reservados.
+            © ${new Date().getFullYear()} cww. Todos os direitos reservados.
           </td>
         </tr>
       </table>
