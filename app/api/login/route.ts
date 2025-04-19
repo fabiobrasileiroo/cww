@@ -3,8 +3,9 @@ import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import prisma from "@/lib/prisma"
 import { SignJWT } from "jose"
+import { jwtSecret } from "@/lib/config/config"
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!)
+const JWT_SECRET = jwtSecret
 
 export async function POST(req: Request) {
   const { email, password } = await req.json()

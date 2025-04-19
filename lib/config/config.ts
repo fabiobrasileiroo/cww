@@ -1,6 +1,14 @@
-export const isDev = process.env.APP_ENV === "dev"
-export const isHomol = process.env.APP_ENV === "homol"
-export const isProd = process.env.APP_ENV === "prod"
+export const isDev = process.env.NODE_ENV === "development"
+export const isHomol = process.env.NODE_ENV === "test"
+export const isProd = process.env.NODE_ENV === "production"
 
-export const databaseUrl = process.env.DATABASE_URL!
-export const jwtSecret = new TextEncoder().encode(process.env.JWT_SECRET!)
+// Escolhe o segredo apropriado
+const rawJwtSecret =
+  isProd ? process.env.JWT_SECRET :
+  process.env.JWT_SECRET_DEVELOPMENT
+console.log('isjwtDev?',isProd)
+if (!rawJwtSecret) {
+  throw new Error("JWT secret is not defined for the current environment.")
+}
+
+export const jwtSecret = new TextEncoder().encode(rawJwtSecret)

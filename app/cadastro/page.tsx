@@ -1,4 +1,3 @@
-// app/cadastro/page.tsx
 "use client"
 
 import { useState } from "react"
@@ -14,18 +13,53 @@ export default function CadastroPage() {
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
 
+  async function toBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = () => reject("Erro ao ler arquivo")
+    })
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError("")
     setIsLoading(true)
 
     const form = new FormData(e.currentTarget)
-    const payload = {
-      name: form.get("name"),
-      email: form.get("email"),
-      password: form.get("password"),
-      confirmPassword: form.get("confirmPassword"),
+    const name = form.get("name") as string
+    const email = form.get("email") as string
+    const password = form.get("password") as string
+    const confirmPassword = form.get("confirmPassword") as string
+    const file = form.get("image") as File | null
+
+    // validações básicas
+    if (!name || !email || !password || !confirmPassword) {
+      setError("Todos os campos são obrigatórios")
+      setIsLoading(false)
+      return
     }
+    if (password !== confirmPassword) {
+      setError("As senhas não coincidem")
+      setIsLoading(false)
+      return
+    }
+
+    // converte imagem para base64, se fornecida
+    let imageBase64: string | null = null
+    if (file && file.size > 0) {
+      try {
+        imageBase64 = await toBase64(file)
+      } catch {
+        setError("Falha ao processar imagem")
+        setIsLoading(false)
+        return
+      }
+    }
+
+    // monta payload
+    const payload = { name, email, password, confirmPassword, image: imageBase64 }
 
     try {
       const res = await fetch("/api/register", {
@@ -33,15 +67,13 @@ export default function CadastroPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-
       const data = await res.json()
       if (!res.ok) {
         setError(data.error || "Erro desconhecido")
       } else {
-        // redireciona para login
         router.push("/login")
       }
-    } catch (err) {
+    } catch {
       setError("Falha na requisição")
     } finally {
       setIsLoading(false)
@@ -54,15 +86,12 @@ export default function CadastroPage() {
         <h1 className="text-3xl font-bold mb-8 text-center">Cadastre-se</h1>
 
         {error && (
-          <Alert
-            variant="destructive"
-            className="bg-red-900/30 border border-red-500 text-red-300 mb-4"
-          >
+          <Alert variant="destructive" className="bg-red-900/30 border-red-500 text-red-300 mb-4">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
           <div className="space-y-2">
             <Label htmlFor="name">Nome</Label>
             <Input id="name" name="name" required className="bg-gray-800 border-gray-700" />
@@ -89,11 +118,19 @@ export default function CadastroPage() {
             />
           </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700"
-            disabled={isLoading}
-          >
+          {/* Novo campo de upload de imagem */}
+          <div className="space-y-2">
+            <Label htmlFor="image">Foto de Perfil</Label>
+            <Input
+              id="image"
+              name="image"
+              type="file"
+              accept="image/*"
+              className="bg-gray-800 border-gray-700"
+            />
+          </div>
+
+          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
             {isLoading ? "Cadastrando..." : "Cadastre-se"}
           </Button>
 
@@ -107,3 +144,4 @@ export default function CadastroPage() {
     </div>
   )
 }
+

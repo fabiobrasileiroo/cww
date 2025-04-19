@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Rotas que requerem autenticação
-  const authRoutes = ["/perfil", "/meus-eventos", "/eventos/novo"]
+  const authRoutes = ["/perfil", "/meus-eventos" ]
 
   // Rotas que requerem papel de administrador
   const adminRoutes = ["/admin", "/admin/eventos", "/admin/usuarios"]
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
 
   // Verificar rotas de autenticação
   if (authRoutes.some((route) => path.startsWith(route)) && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url))
+    return NextResponse.redirect(new URL("/", request.url))
   }
 
   // Verificar rotas de administrador
