@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
         <!-- Corpo do e‑mail -->
         <tr>
           <td style="padding:30px;font-family:Arial, sans-serif;line-height:1.5;color:#333;">
-            <h2 style="color:#f4b590;margin-top:0;">Redefinição de Senha</h2>
+            <h2 style="color:#FE6000;margin-top:0;">Redefinição de Senha</h2>
             <p>Olá,</p>
             <p>Você solicitou a redefinição de senha da sua conta. Clique no botão abaixo para prosseguir:</p>
 
