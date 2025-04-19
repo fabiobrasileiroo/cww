@@ -11,6 +11,8 @@ interface CarouselItem {
   description?: string
   isView?: boolean
   image: string
+  link?: string
+  descriptionLink: string
 }
 
 interface HeroCarouselProps {
@@ -49,25 +51,45 @@ export default function HeroCarousel({ items }: HeroCarouselProps) {
         {items.map((item) => (
           <div key={item.id} className="min-w-full relative">
             <div className="relative h-[400px] w-full">
-              <Image
-                src={item.image || "/placeholder.svg"}
-                alt={item.title}
-                fill
-                className={`transition-all duration-300 ${item.isView === false ? 'object-contain rounded-lg' : 'object-cover brightness-50'
-                  }`}
-                priority
-              />
-
-              {item.isView === true &&
-                <div>
+              {item.isView === false ? (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block w-full h-full relative"
+                >
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.title}
+                    fill
+                    className="object-contain rounded-lg transition-all duration-300 group-hover:brightness-50"
+                    priority
+                  />
+                  {item.descriptionLink && (
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-white text-lg font-semibold px-4 py-2 bg-orange-500 rounded-lg">
+                        {item.descriptionLink}
+                      </span>
+                    </div>
+                  )}
+                </a>
+              ) : (
+                <>
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.title}
+                    fill
+                    className="object-cover brightness-50 transition-all duration-300"
+                    priority
+                  />
                   <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
                   <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-16 max-w-3xl">
                     <h1 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4">{item.title}</h1>
                     <p className="text-sm md:text-base text-gray-200 mb-6">{item.description}</p>
                     <Button className="bg-orange-500 hover:bg-orange-600 text-white w-fit">Ler mais</Button>
                   </div>
-                </div>
-              }
+                </>
+              )}
             </div>
           </div>
         ))}

@@ -66,6 +66,8 @@ export default async function Home() {
       description:
         "A CowWorking conecta talentos, organizações e investidores por meio de uma plataforma inteligente e gamificada, transformando competições de tecnologia, empreendedorismo e inovação em ecossistemas organizados, inclusivos e lucrativos. Nossa solução utiliza IA e Machine Learning para recomendação de talentos e análises personalizadas, além de gamificação para engajamento e blockchain para garantir transparência nos resultados.",
       isView: false,
+      link: "https://chat.whatsapp.com/D0dLMKIiY2gEB8xxDIjDnQ",
+      descriptionLink: "Entre no nosso grupo",
       image: "/banner/cww.png",
     },
     {
