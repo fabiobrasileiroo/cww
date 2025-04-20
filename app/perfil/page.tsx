@@ -1,9 +1,13 @@
 import { getSession } from "@/lib/auth";
+
+import { Button } from "@/components/ui/button";
 import AddProjectCard from "@/components/ui/card-adicionar-projeto";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import ProjectCard from "@/components/ui/card-projeto";
+import BadgeHabilidades from "./components/BadgeHabilidades";
+import SocialMedia from "@/components/ui/socila-medias";
 
 export default async function ProfilePage() {
   const user = await getSession();
@@ -24,21 +28,56 @@ export default async function ProfilePage() {
 
   if (!userData) return <div>Usuário não encontrado.</div>;
 
-  console.log(userData.Project);
+  // console.log(userData);
 
   return (
     <main className="p-6 text-white">
-      <section className="flex items-center gap-6 mb-8">
-        <Image
-          src={userData.image || "/placeholder.png"}
-          alt="Avatar"
-          width={120}
-          height={120}
-          className="rounded-full"
-        />
+      <div className="flex flex-row justify-between items-center mb-8">
+        <section className="flex items-center gap-6 ">
+          <div className="flex flex-col items-center">
+            <Image
+              src={userData.image || "/placeholder.png"}
+              alt="Avatar"
+              width={120}
+              height={120}
+              className="rounded-full"
+            />
+
+            {userData.midiasSocias != null ? (
+              <div className="flex flex-row mt-2">
+                {JSON.parse(userData.midiasSocias || "[]").map((midia) => (
+                  <div className="">
+                    <SocialMedia
+                      key={midia.link}
+                      typeOfSocial={midia.nome}
+                      link={midia.link}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold">{userData.name}</h1>
+            <p className="text-sm text-gray-400">{userData.email}</p>
+          </div>
+        </section>
+
         <div>
-          <h1 className="text-2xl font-bold">{userData.name}</h1>
-          <p className="text-sm text-gray-400">{userData.email}</p>
+          <Button className="bg-orange-500 hover:bg-orange-600">
+            Editar perfil
+          </Button>
+        </div>
+      </div>
+
+      <section>
+        <div>{userData.descricaoPerfil}</div>
+        <div className="flex flex-wrap flex-row my-4">
+          {userData.habilidades.split(";").map((habilidade) => (
+            <div className="mr-1">
+              <BadgeHabilidades key={habilidade} nome={habilidade} />
+            </div>
+          ))}
         </div>
       </section>
 
@@ -47,13 +86,15 @@ export default async function ProfilePage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {userData.events.map((event) => (
             <div key={event.id} className="bg-gray-800 rounded-xl p-4 shadow">
-              <Image
-                src={event.image || "/placeholder-event.jpg"}
-                alt={event.title}
-                width={400}
-                height={200}
-                className="rounded-lg mb-2 object-cover"
-              />
+              <div className="w-full h-[200px] relative mb-2">
+                <Image
+                  src={event.image || "/placeholder-event.jpg"}
+                  alt={event.title}
+                  fill
+                  className="rounded-lg object-cover"
+                  sizes="(max-width: 768px) 100vw, 400px"
+                />
+              </div>
               <h3 className="font-bold text-lg">{event.title}</h3>
               <p className="text-sm text-gray-300 line-clamp-2">
                 {event.description}
@@ -71,7 +112,9 @@ export default async function ProfilePage() {
           ))}
         </div>
       </section>
-
+      {/* midiasSocias */}
+      {/* midiasSocias: '[{"nome":"github","link":"#"},{"nome":"whatsapp","link":"#"},{"nome":"Linkedin","link":"#"}]', */}
+      {/*   habilidades: 'React;AI;Web3;Cyber Security;Python:Rust;Go', */}
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">
           Projetos feitos em hackathons

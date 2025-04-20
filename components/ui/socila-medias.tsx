@@ -14,7 +14,8 @@ function SocialMedia(props: Props) {
 
   return (
     <Link className="text-2xl" href={props.link}>
-      {icon}
+      {" "}
+      {icon}{" "}
     </Link>
   );
 }
