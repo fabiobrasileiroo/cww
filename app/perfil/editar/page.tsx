@@ -50,6 +50,24 @@ export default function NovoEventoPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
 
+  const habilidadesDisponiveis = [
+    "React",
+    "Node.js",
+    "Python",
+    "AI",
+    "Web3",
+    "Rust",
+    "Go",
+    "ThreeJs",
+    "VR",
+    "Game dev",
+    "Unity",
+    "Godot",
+    "Figma",
+    "Design",
+    "Cybersecurity",
+  ];
+
   useEffect(() => {
     return () => {
       if (preview) URL.revokeObjectURL(preview);
@@ -169,6 +187,43 @@ export default function NovoEventoPage() {
               <input type="hidden" name="imageBase64" value={imageBase64} />
             )}
 
+            {/* Campo de selecao de habilidades */}
+            {/* GPT QUE FEZ */}
+
+            <div className="space-y-2">
+              <Label>Habilidades</Label>
+              <div className="grid grid-cols-2 gap-2 text-sm text-gray-300">
+                {habilidadesDisponiveis.map((skill) => (
+                  <label key={skill} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="habilidades"
+                      value={skill}
+                      onChange={() => {
+                        const checkboxes =
+                          document.querySelectorAll<HTMLInputElement>(
+                            'input[name="habilidades"]:checked',
+                          );
+                        const selected = Array.from(checkboxes).map(
+                          (cb) => cb.value,
+                        );
+                        const hidden = document.getElementById(
+                          "habilidadesString",
+                        ) as HTMLInputElement;
+                        hidden.value = selected.join(";");
+                      }}
+                      className="accent-orange-500"
+                    />
+                    {skill}
+                  </label>
+                ))}
+              </div>
+              <input
+                type="hidden"
+                id="habilidadesString"
+                name="habilidadesString"
+              />
+            </div>
             {/* Upload de Imagem */}
             <div className="space-y-2">
               <Label htmlFor="image">Imagem do Evento</Label>
@@ -239,208 +294,3 @@ export default function NovoEventoPage() {
     </div>
   );
 }
-
-/*
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (isSubmitting) return;
-    setIsSubmitting(true);
-
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-
-    // Validação de campos obrigatórios
-    const requiredFields = [
-      { name: "title", label: "Título" },
-      { name: "url", label: "Onde podemos encontrar o projeto?" },
-    ];
-    for (const field of requiredFields) {
-      const value = formData.get(field.name);
-      if (!value || !value.toString().trim()) {
-        toast.error(`O campo ${field.label} é obrigatório.`);
-        setIsSubmitting(false);
-        return;
-      }
-    }
-    const file = fileInputRef.current?.files?.[0] || null;
-    if (!file) {
-      toast.error("Selecione uma imagem para o projeto.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const base64 = reader.result as string;
-        formData.set("imageBase64", base64);
-        formData.delete("image");
-
-        await createEvent(formData);
-        toast.success("Evento criado com sucesso!");
-        router.push("/admin/eventos/pendentes");
-      };
-      reader.readAsDataURL(file);
-    } catch (err) {
-      console.error(err);
-      toast.error("Erro ao criar evento. Tente novamente.");
-      setIsSubmitting(false);
-    }
-  };
-  */
-
-//
-// export default function NovoEventoPage() {
-//   const router = useRouter();
-//   const fileInputRef = useRef<HTMLInputElement>(null);
-//
-//   const [date, setDate] = useState<Date>();
-//   const [isSubmitting, setIsSubmitting] = useState(false);
-//   const [success, setSuccess] = useState(false);
-//
-//   const [state, formAction] = useActionState(createProject, initialState);
-//
-//   const [preview, setPreview] = useState<string | null>(null);
-//   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const file = e.target.files?.[0];
-//
-//     if (file) {
-//       if (file.size > MAX_FILE_SIZE) {
-//         toast.error("Imagem muito grande. Máximo 32MB.");
-//         e.target.value = "";
-//         return;
-//       }
-//       setPreview(URL.createObjectURL(file));
-//     }
-//   };
-//
-//   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-//     e.preventDefault();
-//     if (!fileInputRef.current) return;
-//     const file = e.dataTransfer.files?.[0];
-//     if (file) {
-//       if (file.size > MAX_FILE_SIZE) {
-//         toast.error("Imagem muito grande. Máximo 32MB.");
-//         return;
-//       }
-//       const dt = new DataTransfer();
-//       dt.items.add(file);
-//       fileInputRef.current.files = dt.files;
-//       setPreview(URL.createObjectURL(file));
-//     }
-//   };
-//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     if (!fileInputRef.current) return;
-//     setIsSubmitting(true);
-//
-//     const formData = new FormData(e.currentTarget);
-//
-//     // converte data do calendário
-//
-//     // pega o File do input
-//     const file = (fileInputRef.current.files?.[0] as File) || null;
-//     if (!file) {
-//       alert("Por favor, selecione uma imagem");
-//       setIsSubmitting(false);
-//       return;
-//     }
-//
-//     // converte File → Base64
-//     const reader = new FileReader();
-//     reader.onload = async () => {
-//       const base64 = reader.result as string;
-//       formData.set("imageBase64", base64);
-//       formData.delete("image"); // remove o File cru, só enviamos o Base64
-//
-//       try {
-//         await createEvent(formData);
-//         setSuccess(true);
-//         setTimeout(() => {
-//           router.push("/admin/eventos/pendentes");
-//         }, 2000);
-//       } catch (err) {
-//         console.error(err);
-//         alert("Erro ao criar evento");
-//       } finally {
-//         setIsSubmitting(false);
-//       }
-//     };
-//     reader.readAsDataURL(file);
-//   };
-//
-//   return (
-//     <div className="max-w-4xl mx-auto">
-//               {/* Id do projeto */}
-//               {/* Upload de Imagem */}
-//               {/* Upload de Imagem */}
-//               <div className="space-y-2">
-//                 <Label htmlFor="image">Imagem do Evento</Label>
-//                 <input
-//                   ref={fileInputRef}
-//                   id="image"
-//                   name="image"
-//                   type="file"
-//                   accept="image/*"
-//                   onChange={handleFileChange}
-//                   className="hidden"
-//                 />
-//                 <div
-//                   onClick={() => fileInputRef.current?.click()}
-//                   onDragOver={(e) => e.preventDefault()}
-//                   onDrop={handleDrop}
-//                   className="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:bg-gray-700/50 transition-colors"
-//                 >
-//                   {preview ? (
-//                     <div className="relative inline-block">
-//                       <img
-//                         src={preview}
-//                         alt="Preview da imagem"
-//                         className="mx-auto max-h-48 rounded object-contain"
-//                       />
-//                       <button
-//                         type="button"
-//                         onClick={removeImage}
-//                         className="absolute top-1 right-1 bg-black/70 hover:bg-black text-white rounded-full p-1"
-//                       >
-//                         <X className="w-4 h-4" />
-//                       </button>
-//                     </div>
-//                   ) : (
-//                     <>
-//                       <Upload className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-//                       <p className="text-sm text-gray-400">
-//                         Clique, arraste ou solte uma imagem (≤32MB)
-//                       </p>
-//                       <p className="text-xs text-gray-500 mt-1">
-//                         PNG, JPG ou WEBP
-//                       </p>
-//                     </>
-//                   )}
-//                 </div>
-//               </div>
-//
-//               {/* Botões */}
-//               <div className="flex justify-end gap-3">
-//                 <Button
-//                   type="button"
-//                   variant="outline"
-//                   onClick={() => router.back()}
-//                 >
-//                   Cancelar
-//                 </Button>
-//                 <Button
-//                   type="submit"
-//                   className="bg-orange-500 hover:bg-orange-600"
-//                   disabled={isSubmitting}
-//                 >
-//                   {isSubmitting ? "Adicionando..." : "Adicionar projeto"}
-//                 </Button>
-//               </div>
-//             </form>
-//           </CardContent>
-//         </Card>
-//       )}
-//     </div>
-//   );
-// }

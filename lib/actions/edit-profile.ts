@@ -21,6 +21,7 @@ export async function editProfile(_: any, formData: FormData) {
   const description = formData.get("description")?.toString() || null;
   let github = formData.get("github")?.toString() || null;
   let linkedin = formData.get("linkedin")?.toString() || null;
+  const habilidadesString = formData.get("habilidadesString") as string;
 
   // cria a string de social medias
   let socialMedias = [];
@@ -54,6 +55,7 @@ export async function editProfile(_: any, formData: FormData) {
       image: imageUrl,
       midiasSocias: JSON.stringify(socialMedias),
       descricaoPerfil: description,
+      habilidades: habilidadesString,
     },
   });
   //
