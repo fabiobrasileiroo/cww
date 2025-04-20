@@ -13,6 +13,7 @@ export async function createProject(_: any, formData: FormData) {
   }
 
   const title = formData.get("title")?.toString();
+  const url = formData.get("url")?.toString() || null;
   const eventId = formData.get("eventId")?.toString() || null;
   const description = formData.get("description")?.toString() || null;
   const award = formData.get("award")?.toString() || null;
@@ -43,6 +44,7 @@ export async function createProject(_: any, formData: FormData) {
       title,
       description,
       award,
+      url,
       eventId,
       image: imageUrl,
       userId: session.id,

@@ -285,7 +285,7 @@ export default function NovoEventoPage() {
                 className="bg-orange-500 hover:bg-orange-600"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Adicionando..." : "Adicionar evento"}
+                {isSubmitting ? "Editando..." : "Editar Perfil"}
               </Button>
             </div>
           </form>

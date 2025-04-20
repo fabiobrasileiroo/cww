@@ -1,21 +1,26 @@
 import { getSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import AddProjectCard from "@/components/ui/card-adicionar-projeto";
-import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
 import ProjectCard from "@/components/ui/card-projeto";
 import SocialMedia from "@/components/ui/socila-medias";
 import BadgeHabilidades from "@/components/ui/BadgeHabilidades";
 
-export default async function ProfilePage() {
-  const user = await getSession();
+type Props = {
+  params: {
+    id: string; // URL param: user ID
+  };
+};
 
-  if (!user) return <div>Usuário não autenticado.</div>;
+export default async function ProfilePage({ params }: Props) {
+  const session = await getSession();
 
   const userData = await prisma.user.findUnique({
-    where: { id: user.id },
+    where: { id: params.id },
     include: {
       events: true,
       Project: {
@@ -26,10 +31,8 @@ export default async function ProfilePage() {
     },
   });
 
-  if (!userData) return <div>Usuário não encontrado.</div>;
-
-  // console.log(userData.Project);
-  //
+  if (!userData) return notFound(); // ⛔ Show 404 if no user
+  console.log(userData.Project);
 
   return (
     <main className="p-6 text-white">
@@ -47,7 +50,7 @@ export default async function ProfilePage() {
             {userData.midiasSocias != null ? (
               <div className="flex flex-row mt-2">
                 {JSON.parse(userData.midiasSocias || "[]").map((midia) => (
-                  <div key={midia.link} className="">
+                  <div key={midia.link}>
                     <SocialMedia typeOfSocial={midia.nome} link={midia.link} />
                   </div>
                 ))}
@@ -59,14 +62,6 @@ export default async function ProfilePage() {
             <p className="text-sm text-gray-400">{userData.email}</p>
           </div>
         </section>
-
-        <div>
-          <Link href="/perfil/editar">
-            <Button className="bg-orange-500 hover:bg-orange-600">
-              Editar perfil
-            </Button>
-          </Link>
-        </div>
       </div>
 
       <section>
@@ -111,16 +106,8 @@ export default async function ProfilePage() {
             </div>
           ))}
         </div>
-
-        <div className="mt-8">
-          <Link href="/eventos/novo">
-            <Button variant="outline">Sujerir um evento</Button>
-          </Link>
-        </div>
       </section>
-      {/* Podiums */}
-      {/* Certificados */}
-      {/* Projetos */}
+
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">
           Projetos feitos em hackathons
@@ -130,19 +117,14 @@ export default async function ProfilePage() {
             <ProjectCard
               id={project.id}
               key={project.title}
-              isEditable
               nome={project.title}
               link={project.url}
               rank={project.award}
               img={project.image}
             />
           ))}
-
-          <AddProjectCard />
         </div>
       </section>
     </main>
   );
 }
-
-// meus eventos colocar os eventos que eu vou participar

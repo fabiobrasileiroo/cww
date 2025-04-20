@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import EventCard from "@/components/event-card"
-import prisma from "@/lib/prisma"
+import { Button } from "@/components/ui/button";
+import EventCard from "@/components/event-card";
+import prisma from "@/lib/prisma";
 
 export default async function EventosPage() {
   // Buscar eventos aprovados do banco de dados
@@ -18,7 +18,7 @@ export default async function EventosPage() {
         },
       },
     },
-  })
+  });
 
   return (
     <div className="py-8">
@@ -36,5 +36,5 @@ export default async function EventosPage() {
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -131,6 +131,7 @@ enum SeloEvento {
   PRATA
   BRONZE
   LATAO
+  NAO_RECOMENDA
 }
 
 enum EventStatus {

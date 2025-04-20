@@ -7,6 +7,7 @@ import CommentSection from "@/components/comment-section";
 import prisma from "@/lib/prisma";
 import { formatDate } from "@/lib/utils";
 import { notFound } from "next/navigation";
+import OpiniaoCowworking from "@/components/ui/opiniao-cowworking";
 
 interface EventPageProps {
   params: {
@@ -21,6 +22,12 @@ export default async function EventPage({ params }: EventPageProps) {
       id: params.id,
     },
     include: {
+      OpiniaoCowworking: {
+        select: {
+          opniao: true,
+          selo: true,
+        },
+      },
       author: {
         select: {
           name: true,
@@ -50,6 +57,7 @@ export default async function EventPage({ params }: EventPageProps) {
   if (!event) {
     notFound();
   }
+  console.log(event);
 
   // Buscar respostas para os comentários
   const replies = await prisma.comment.findMany({
@@ -155,6 +163,9 @@ export default async function EventPage({ params }: EventPageProps) {
             </div>
           </section>
 
+          {event.OpiniaoCowworking && (
+            <OpiniaoCowworking {...event.OpiniaoCowworking} />
+          )}
           <CommentSection eventId={event.id} comments={commentsWithReplies} />
         </div>
 
@@ -184,7 +195,9 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </div>
             <Button className="w-full bg-orange-500 hover:bg-orange-600">
-              <NextLink href={event.urlEvento}>Participar</NextLink>
+              <NextLink href={event.urlEvento == null ? "#" : event.urlEvento}>
+                Participar
+              </NextLink>
             </Button>
           </div>
         </div>
