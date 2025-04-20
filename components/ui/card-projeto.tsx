@@ -12,7 +12,7 @@ export type Props = {
 export default function ProjectCard({ nome, events, rank, img, link }: Props) {
   return (
     <Link
-      href={link}
+      href={link == null ? "#" : link}
       target="_blank"
       rel="noopener noreferrer"
       className="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-lg group block"

@@ -3,6 +3,7 @@ import AddProjectCard from "@/components/ui/card-adicionar-projeto";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
+import ProjectCard from "@/components/ui/card-projeto";
 
 export default async function ProfilePage() {
   const user = await getSession();
@@ -22,6 +23,8 @@ export default async function ProfilePage() {
   });
 
   if (!userData) return <div>Usuário não encontrado.</div>;
+
+  console.log(userData.Project);
 
   return (
     <main className="p-6 text-white">
@@ -75,44 +78,27 @@ export default async function ProfilePage() {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {userData.Project.map((project) => (
-            <div key={project.id} className="relative group">
-              <Image
-                src={project.image || "/placeholder-project.jpg"}
-                alt={project.title}
-                width={400}
-                height={200}
-                className="rounded-lg object-cover brightness-75 group-hover:brightness-100 transition"
-              />
-              <div className="absolute bottom-4 left-4 text-white">
-                <h3 className="font-bold text-lg drop-shadow">
-                  {project.title}
-                </h3>
-                <p className="text-sm drop-shadow">
-                  {project.event?.title || "Projeto individual"}
-                </p>
-                {project.award && (
-                  <p className="text-md font-bold drop-shadow">
-                    {project.award}
-                  </p>
-                )}
-              </div>
-            </div>
+            <ProjectCard
+              key={project.title}
+              nome={project.title}
+              link={project.url}
+              rank={""}
+              img={project.image}
+            />
           ))}
 
           <AddProjectCard />
-          <Link
-            href="/project/create"
-            className="flex items-center justify-center border-2 border-orange-500 rounded-lg h-[200px] hover:bg-orange-500 transition"
-          >
-            <span className="text-orange-500 group-hover:text-white font-bold text-lg">
-              + Adicionar Projeto
-            </span>
-          </Link>
         </div>
       </section>
     </main>
   );
 }
+
+/*
+
+
+            // </div>
+*/
 // import prisma from "@/lib/prisma";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 // import Image from "next/image";
