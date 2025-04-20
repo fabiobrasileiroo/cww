@@ -16,7 +16,11 @@ import {
 } from "@/components/ui/select";
 import { CalendarIcon, Upload, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
@@ -98,6 +102,7 @@ export default function NovoEventoPage() {
       { name: "location", label: "Local" },
       { name: "prize", label: "Premiação" },
       { name: "contact", label: "Contato" },
+      { name: "urlEvento", label: "Site to evento" },
     ];
     for (const field of requiredFields) {
       const value = formData.get(field.name);
@@ -228,7 +233,7 @@ export default function NovoEventoPage() {
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal bg-gray-700 border-gray-600",
-                        !date && "text-muted-foreground"
+                        !date && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -290,10 +295,20 @@ export default function NovoEventoPage() {
                 className="bg-gray-700 border-gray-600"
               />
             </div>
+            {/* url do evento */}
+            <div className="space-y-2">
+              <Label htmlFor="urlEvento">Site to evento</Label>
+              <Input
+                id="urlEvento"
+                name="urlEvento"
+                placeholder="https://site-evento.com"
+                className="bg-gray-700 border-gray-600"
+              />
+            </div>
 
             {/* Upload de Imagem */}
-            <div className="space-y-2">\
-n              <Label htmlFor="image">Imagem do Evento</Label>
+            <div className="space-y-2">
+              <Label htmlFor="image">Imagem do Evento</Label>
               <input
                 ref={fileInputRef}
                 id="image"
@@ -340,7 +355,11 @@ n              <Label htmlFor="image">Imagem do Evento</Label>
 
             {/* Botões */}
             <div className="flex justify-end gap-3">
-              <Button type="button" variant="outline" onClick={() => router.back()}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+              >
                 Cancelar
               </Button>
               <Button

@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_DEV")
 }
 
 model User {
@@ -29,6 +29,14 @@ model User {
   sessions Session[]
 
   Project Project[]
+
+  // vai ser uma string no formato json
+  // "[{nome:"gitHub, link:"#"},{nome:"linkedin", link:"#"} ]"
+  midiasSocias String?
+
+  // uma string que seguira o formato 
+  // "React;Cyber Security;AI"
+  habilidades String?
 }
 
 model Session {
@@ -61,10 +69,20 @@ model Event {
 
   authorId String
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  urlEvento String?
 
   comments Comment[]
 
   Project Project[]
+  OpiniaoCowworking  OpiniaoCowworking?
+}
+
+model OpiniaoCowworking {
+  id      String   @id @default(cuid())
+eventId String @unique
+  opniao  String
+  selo    SeloEvento 
+  event   Event?  @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -74,6 +92,7 @@ model Project {
   award       String?
   image       String?
   createdAt   DateTime @default(now())
+  url         String?
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -103,6 +122,13 @@ enum Role {
   USER
   ADMIN
   ROOT
+}
+
+enum SeloEvento {
+  OURO
+  PRATA
+  BRONZE
+  LATAO
 }
 
 enum EventStatus {

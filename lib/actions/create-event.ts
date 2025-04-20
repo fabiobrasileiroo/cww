@@ -16,7 +16,6 @@ export async function createEvent(formData: FormData) {
   }
   const authorId = session.id;
 
-
   // 1. Extrai os campos do evento
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
@@ -26,12 +25,21 @@ export async function createEvent(formData: FormData) {
   const contact = formData.get("contact") as string;
   const category = formData.get("category") as string;
   const secondCategory = formData.get("secondCategory") as string | null;
+  const urlEvento = formData.get("urlEvento") as string;
   const dateString = formData.get("date") as string;
   const time = formData.get("time") as string;
-  if (!title || !description || !location || !time || !contact || !prize || !category) {
+  if (
+    !title ||
+    !description ||
+    !location ||
+    !time ||
+    !contact ||
+    !prize ||
+    !category
+  ) {
     return {
       error: "Todos os campos obrigatórios devem ser preenchidos",
-    }
+    };
   }
 
   // 2. Extrai e limpa a string Base64
@@ -48,20 +56,19 @@ export async function createEvent(formData: FormData) {
     throw new Error("Falha ao enviar a imagem para o serviço de hospedagem.");
   }
   try {
-
-    const slug = slugify(title)
+    const slug = slugify(title);
 
     // Verificar se já existe um evento com o mesmo slug
     const existingEvent = await prisma.event.findUnique({
       where: {
         slug,
       },
-    })
+    });
 
     if (existingEvent) {
       return {
         error: "Já existe um evento com este título",
-      }
+      };
     }
 
     // 4. Persiste no banco via Prisma, usando o userId real
@@ -78,27 +85,29 @@ export async function createEvent(formData: FormData) {
         prize,
         contact,
         date: new Date(dateString),
+        urlEvento: urlEvento,
         time,
         image: imageUrl,
         category,
         categoryColor: "#FFA500",
         // Se o usuário não selecionar, envie null
-        secondCategory: secondCategory || null, secondCategoryColor: "#666666",
-        authorId,              // ← aqui: o ID que existe no seu User Table
+        secondCategory: secondCategory || null,
+        secondCategoryColor: "#666666",
+        authorId, // ← aqui: o ID que existe no seu User Table
       },
     });
 
-    revalidatePath("/eventos")
-    revalidatePath("/meus-eventos")
+    revalidatePath("/eventos");
+    revalidatePath("/meus-eventos");
 
     // 5. Revalida a página de eventos pendentes
     if (session.role === "ADMIN" || session.role === "ROOT") {
-      revalidatePath("/admin/eventos/pendentes")
+      revalidatePath("/admin/eventos/pendentes");
     }
   } catch (error) {
-    console.error("Erro ao criar evento", error)
+    console.error("Erro ao criar evento", error);
     return {
-      error: "Ocorreu um erro ao criar o evento"
-    }
+      error: "Ocorreu um erro ao criar o evento",
+    };
   }
 }

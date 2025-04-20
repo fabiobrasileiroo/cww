@@ -1,9 +1,8 @@
-import EventCard from "@/components/event-card"
-import TeamMember from "@/components/team-member"
-import HeroCarousel from "@/components/hero-carousel"
-import prisma from "@/lib/prisma"
-import Image from "next/image"
-
+import EventCard from "@/components/event-card";
+import TeamMember from "@/components/team-member";
+import HeroCarousel from "@/components/hero-carousel";
+import prisma from "@/lib/prisma";
+import Image from "next/image";
 export default async function Home() {
   // Buscar eventos aprovados do banco de dados
   const events = await prisma.event.findMany({
@@ -21,7 +20,7 @@ export default async function Home() {
         },
       },
     },
-  })
+  });
 
   // Dados simulados para a equipe
   const teamMembers = [
@@ -55,7 +54,7 @@ export default async function Home() {
       role: "Desenvolvedor do projeto",
       image: "/founder/fabiobrasileiro.jpeg",
     },
-  ]
+  ];
 
   // Dados simulados para o carrossel
   const carouselItems = [
@@ -85,7 +84,22 @@ export default async function Home() {
       isView: true,
       image: "/event.jpg",
     },
-  ]
+  ];
+
+  const getCategoryBadge = () => {
+    if (!event.status) return null;
+
+    switch (event.status) {
+      case "APPROVED":
+        return <Badge className="bg-green-600">Aprovado</Badge>;
+      case "PENDING":
+        return <Badge className="bg-yellow-600">Pendente</Badge>;
+      case "REJECTED":
+        return <Badge className="bg-red-600">Rejeitado</Badge>;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-16">
@@ -106,7 +120,13 @@ export default async function Home() {
       <section>
         <h2 className="text-3xl font-bold mb-6">Sobre Nós</h2>
         <p className="text-gray-300 mb-10">
-          A CowWorking conecta talentos, organizações e investidores por meio de uma plataforma inteligente e gamificada, transformando competições de tecnologia, empreendedorismo e inovação em ecossistemas organizados, inclusivos e lucrativos. Nossa solução utiliza IA e Machine Learning para recomendação de talentos e análises personalizadas, além de gamificação para engajamento e blockchain para garantir transparência nos resultados.
+          A CowWorking conecta talentos, organizações e investidores por meio de
+          uma plataforma inteligente e gamificada, transformando competições de
+          tecnologia, empreendedorismo e inovação em ecossistemas organizados,
+          inclusivos e lucrativos. Nossa solução utiliza IA e Machine Learning
+          para recomendação de talentos e análises personalizadas, além de
+          gamificação para engajamento e blockchain para garantir transparência
+          nos resultados.
         </p>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6">
           {teamMembers.map((member) => (
@@ -119,17 +139,28 @@ export default async function Home() {
       <section className="relative py-10 px-6 rounded-lg bg-[#1a1a1a]">
         <h2 className="text-3xl font-bold mb-6">Opinião Coworking</h2>
         <p className="text-gray-300 max-w-3xl">
-          Na CowWorking, promovemos um ambiente colaborativo onde participantes desenvolvem habilidades técnicas e sociais, ampliam sua rede de contatos e validam portfólios com métricas confiáveis. Organizadores contam com automação e insights para otimizar eventos; empresas e instituições acadêmicas têm acesso a talentos qualificados; mentores recebem reconhecimento e visibilidade, fortalecendo o ecossistema de inovação.
+          Na CowWorking, promovemos um ambiente colaborativo onde participantes
+          desenvolvem habilidades técnicas e sociais, ampliam sua rede de
+          contatos e validam portfólios com métricas confiáveis. Organizadores
+          contam com automação e insights para otimizar eventos; empresas e
+          instituições acadêmicas têm acesso a talentos qualificados; mentores
+          recebem reconhecimento e visibilidade, fortalecendo o ecossistema de
+          inovação.
         </p>
         <div className="absolute bottom-10 right-10 flex items-center gap-3 max-xl:hidden">
           <div className="flex flex-col items-center gap-4">
             <div className="flex items-center justify-center w-24 h-24 border-4 border-orange-500 rounded-full">
-              <Image src="/cww-logo.svg" width={40} height={40} alt="Logo ouro" />
+              <Image
+                src="/cww-logo.svg"
+                width={40}
+                height={40}
+                alt="Logo ouro"
+              />
             </div>
             <span className="text-yellow-400 text-2xl font-bold">Ouro</span>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

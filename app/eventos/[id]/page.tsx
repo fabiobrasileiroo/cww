@@ -1,16 +1,17 @@
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, MapPin, Phone, Award } from "lucide-react"
-import CommentSection from "@/components/comment-section"
-import prisma from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
-import { notFound } from "next/navigation"
+import Image from "next/image";
+import NextLink from "next/link";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, MapPin, Phone, Award, Link } from "lucide-react";
+import CommentSection from "@/components/comment-section";
+import prisma from "@/lib/prisma";
+import { formatDate } from "@/lib/utils";
+import { notFound } from "next/navigation";
 
 interface EventPageProps {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
 export default async function EventPage({ params }: EventPageProps) {
@@ -44,10 +45,10 @@ export default async function EventPage({ params }: EventPageProps) {
         },
       },
     },
-  })
+  });
 
   if (!event) {
-    notFound()
+    notFound();
   }
 
   // Buscar respostas para os comentários
@@ -64,53 +65,69 @@ export default async function EventPage({ params }: EventPageProps) {
         },
       },
     },
-  })
+  });
 
   // Organizar comentários e respostas
   const commentsWithReplies = event.comments.map((comment) => {
-    const commentReplies = replies.filter((reply) => reply.parentId === comment.id)
+    const commentReplies = replies.filter(
+      (reply) => reply.parentId === comment.id,
+    );
     return {
       ...comment,
       replies: commentReplies,
-    }
-  })
+    };
+  });
 
   const getCategoryColorClass = (color: string) => {
     switch (color) {
       case "purple":
-        return "bg-purple-600"
+        return "bg-purple-600";
       case "green":
-        return "bg-green-600"
+        return "bg-green-600";
       case "blue":
-        return "bg-blue-600"
+        return "bg-blue-600";
       case "red":
-        return "bg-red-600"
+        return "bg-red-600";
       case "teal":
-        return "bg-teal-600"
+        return "bg-teal-600";
       case "orange":
-        return "bg-orange-600"
+        return "bg-orange-600";
       case "pink":
-        return "bg-pink-600"
+        return "bg-pink-600";
       case "yellow":
-        return "bg-yellow-600"
+        return "bg-yellow-600";
       case "emerald":
-        return "bg-emerald-600"
+        return "bg-emerald-600";
       default:
-        return "bg-gray-700"
+        return "bg-gray-700";
     }
-  }
+  };
+
+  const handelParticipar = () => {
+    alert(`redirecionando para ${event.urlEvento}`);
+  };
 
   return (
     <div className="py-8">
       <div className="relative h-[400px] w-full mb-8 rounded-lg overflow-hidden">
-        <Image src={event.image || "/placeholder.svg"} alt={event.title} fill className="object-cover" priority />
+        <Image
+          src={event.image || "/placeholder.svg"}
+          alt={event.title}
+          fill
+          className="object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
         <div className="absolute bottom-0 left-0 p-8">
           <h1 className="text-4xl font-bold text-white mb-2">{event.title}</h1>
           <div className="flex gap-2 mb-4">
-            <Badge className={`${getCategoryColorClass(event.categoryColor)}`}>{event.category}</Badge>
+            <Badge className={`${getCategoryColorClass(event.categoryColor)}`}>
+              {event.category}
+            </Badge>
             {event.secondCategory && (
-              <Badge className={`${getCategoryColorClass(event.secondCategoryColor || "")}`}>
+              <Badge
+                className={`${getCategoryColorClass(event.secondCategoryColor || "")}`}
+              >
                 {event.secondCategory}
               </Badge>
             )}
@@ -122,7 +139,9 @@ export default async function EventPage({ params }: EventPageProps) {
         <div className="lg:col-span-2 space-y-8">
           <section>
             <h2 className="text-2xl font-bold mb-4">Descrição do Evento</h2>
-            <p className="text-gray-300">{event.longDescription || event.description}</p>
+            <p className="text-gray-300">
+              {event.longDescription || event.description}
+            </p>
           </section>
 
           <section>
@@ -130,7 +149,8 @@ export default async function EventPage({ params }: EventPageProps) {
             <div className="bg-gray-800 p-6 rounded-lg">
               <h3 className="text-xl font-bold mb-2">{event.author.name}</h3>
               <p className="text-gray-300">
-                Organizador do evento {event.title}. Entre em contato através do email {event.author.email}.
+                Organizador do evento {event.title}. Entre em contato através do
+                email {event.author.email}.
               </p>
             </div>
           </section>
@@ -163,10 +183,12 @@ export default async function EventPage({ params }: EventPageProps) {
                 <span>Premiação: {event.prize}</span>
               </div>
             </div>
-            <Button className="w-full bg-orange-500 hover:bg-orange-600">Participar</Button>
+            <Button className="w-full bg-orange-500 hover:bg-orange-600">
+              <NextLink href={event.urlEvento}>Participar</NextLink>
+            </Button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
