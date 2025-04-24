@@ -1,14 +1,14 @@
+import { socialMediasSchema, type SocialMedia as SocialMediaLinks } from "@/schemas/socialMedia";
+import AddProjectCard from "@/components/ui/card-adicionar-projeto";
+import BadgeHabilidades from "@/components/ui/BadgeHabilidades";
+import SocialMedia from "@/components/ui/socila-medias";
+import ProjectCard from "@/components/ui/card-projeto";
+import { Button } from "@/components/ui/button";
+import { notFound } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
-
-import { Button } from "@/components/ui/button";
-import AddProjectCard from "@/components/ui/card-adicionar-projeto";
 import Image from "next/image";
 import Link from "next/link";
-import ProjectCard from "@/components/ui/card-projeto";
-import SocialMedia from "@/components/ui/socila-medias";
-import BadgeHabilidades from "@/components/ui/BadgeHabilidades";
 
 type Props = {
   params: {
@@ -34,6 +34,8 @@ export default async function ProfilePage({ params }: Props) {
   if (!userData) return notFound(); // ⛔ Show 404 if no user
   console.log(userData.Project);
 
+  const midias: SocialMediaLinks[] = socialMediasSchema.parse(userData.midiasSocias ?? []);
+
   return (
     <main className="p-6 text-white">
       <div className="flex flex-row justify-between items-center mb-8">
@@ -47,15 +49,15 @@ export default async function ProfilePage({ params }: Props) {
               className="rounded-full"
             />
 
-            {userData.midiasSocias != null ? (
+            {midias.length > 0 && (
               <div className="flex flex-row mt-2">
-                {JSON.parse(userData.midiasSocias || "[]").map((midia) => (
+                {midias.map((midia) => (
                   <div key={midia.link}>
                     <SocialMedia typeOfSocial={midia.nome} link={midia.link} />
                   </div>
                 ))}
               </div>
-            ) : null}
+            )}
           </div>
           <div>
             <h1 className="text-2xl font-bold">{userData.name}</h1>
