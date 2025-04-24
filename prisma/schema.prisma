@@ -32,9 +32,8 @@ model User {
 
   descricaoPerfil String?
 
-  // vai ser uma string no formato json
-  // "[{nome:"gitHub, link:"#"},{nome:"linkedin", link:"#"} ]"
-  midiasSocias String?
+  // vai ser um campo JSON armazenando um array de objetos { nome: string, link: string }[]
+  midiasSocias Json?
 
   // uma string que seguira o formato 
   // "React;Cyber Security;AI"
