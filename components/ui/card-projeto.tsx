@@ -9,10 +9,10 @@ import { FiTrash } from "react-icons/fi"; // Ícone de lixeira
 export type Props = {
   id: string;
   nome: string;
-  events: string;
-  rank: string;
-  img: string;
-  link: string;
+  events?: string;
+  rank: string | null;
+  img: string | null;
+  link: string | null;
   isEditable?: boolean; // nova prop opcional
 };
 
@@ -57,7 +57,7 @@ export default function ProjectCard({
       >
         <div className="relative h-64 w-full">
           <Image
-            src={img}
+            src={img ?? "/placeholder.svg"}
             alt={nome}
             layout="fill"
             objectFit="cover"
@@ -68,7 +68,9 @@ export default function ProjectCard({
               {nome}
             </h2>
             {/* <p className="text-sm text-gray-200">Evento: {events}</p> */}
-            <p className="text-sm text-gray-200">Colocação: {rank}</p>
+            <p className="text-sm text-gray-200">
+              Colocação: {rank ?? "Nenhuma colocação"}
+            </p>
           </div>
         </div>
       </Link>

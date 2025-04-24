@@ -1,13 +1,13 @@
-import { getSession } from "@/lib/auth";
-
-import { Button } from "@/components/ui/button";
+import { socialMediasSchema, type SocialMedia as SocialMediaLinks } from "@/schemas/socialMedia";
 import AddProjectCard from "@/components/ui/card-adicionar-projeto";
+import BadgeHabilidades from "@/components/ui/BadgeHabilidades";
+import ProjectCard from "@/components/ui/card-projeto";
+import SocialMedia from "@/components/ui/socila-medias";
+import { Button } from "@/components/ui/button";
+import { getSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import Image from "next/image";
 import Link from "next/link";
-import ProjectCard from "@/components/ui/card-projeto";
-import SocialMedia from "@/components/ui/socila-medias";
-import BadgeHabilidades from "@/components/ui/BadgeHabilidades";
 
 export default async function ProfilePage() {
   const user = await getSession();
@@ -28,6 +28,8 @@ export default async function ProfilePage() {
 
   if (!userData) return <div>Usuário não encontrado.</div>;
 
+  const midias: SocialMediaLinks[] = socialMediasSchema.parse(userData.midiasSocias ?? []);
+
   // console.log(userData.Project);
   //
 
@@ -44,15 +46,15 @@ export default async function ProfilePage() {
               className="rounded-full"
             />
 
-            {userData.midiasSocias != null ? (
+            {midias.length > 0 && (
               <div className="flex flex-row mt-2">
-                {JSON.parse(userData.midiasSocias || "[]").map((midia) => (
-                  <div key={midia.link} className="">
+                {midias.map((midia) => (
+                  <div key={midia.link}>
                     <SocialMedia typeOfSocial={midia.nome} link={midia.link} />
                   </div>
                 ))}
               </div>
-            ) : null}
+            )}
           </div>
           <div>
             <h1 className="text-2xl font-bold">{userData.name}</h1>
@@ -114,12 +116,13 @@ export default async function ProfilePage() {
 
         <div className="mt-8">
           <Link href="/eventos/novo">
-            <Button variant="outline">Sujerir um evento</Button>
+            <Button variant="outline">Sugerir um evento</Button>
           </Link>
         </div>
       </section>
       {/* Podiums */}
       {/* Certificados */}
+
       {/* Projetos */}
       <section className="mb-10">
         <h2 className="text-xl font-semibold mb-4">
