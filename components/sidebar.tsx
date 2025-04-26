@@ -29,6 +29,7 @@ export default function Sidebar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const { user } = useAuth()
+  console.log("🚀 ~ Sidebar ~ user:", user)
 
   const isAdmin = user?.role === "ADMIN" || user?.role === "ROOT"
   const isRoot = user?.role === "ROOT"
@@ -221,13 +222,15 @@ export default function Sidebar() {
             {isAuthenticated ? (
               <>
                 <div className="flex items-center gap-3 px-3 py-2">
-                  <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
 
+                  <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
                     {user.image ? (
-                      <img
+                      <Image
                         src={user.image || "/placeholder.svg"}
                         alt={user.name || "Usuário"}
-                        className="w-8 h-8 rounded-full"
+                        width={32}
+                        height={32}
+                        className="rounded-full"
                       />
                     ) : (
                       <User size={18} />

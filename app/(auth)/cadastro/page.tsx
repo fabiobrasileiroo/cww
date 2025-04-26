@@ -7,11 +7,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import Link from "next/link"
+import Image from "next/image"
+import { authUrl } from "@/lib/config/oauth"
+const AUTHURL = authUrl
 
 export default function CadastroPage() {
   const router = useRouter()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
+  
 
   async function toBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -130,9 +134,17 @@ export default function CadastroPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
-            {isLoading ? "Cadastrando..." : "Cadastre-se"}
-          </Button>
+          <div className="flex flex-col gap-4">
+            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+              {isLoading ? "Cadastrando..." : "Cadastre-se"}
+            </Button>
+            <Button variant="outline" asChild className="flex gap-2">
+              <Link href={AUTHURL}>
+                <Image src="/icon/google-icon.svg" width={24} height={24} alt="google provider" />
+                Cadastre-se com Google
+              </Link>
+            </Button>
+          </div>
 
           <div className="text-center text-sm">
             <Link href="/login" className="text-blue-400 hover:underline">
