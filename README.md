@@ -19,7 +19,7 @@
 - [] RF07-UI: Implementar Gerenciamento de eventos.
 - [] RF07-Back: Implementar Gerenciamento de eventos.
 - [x] RF08-Back-UI: Implementar funcionalidade de evento de imagem pelo imgBB.
-- [] RF09-Back-UI: Implementar envio de e-mail para usuário ao esquecer a senha para mudar a senha.
+- [] RF09-Back-UI: Implementar envio de e-mail para usuário ao esquecer a senha para mudar a senha e no cadastro do usuário.
 - [x] RF10-Back-Ui: Implementar relatório de usuário e eventos.
 - [x] RF11: Implementar registro de novos usuários.
 - [x] RF12: Implementar controle de permissões por nível de usuário.
