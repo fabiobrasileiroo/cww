@@ -59,7 +59,7 @@
     "imgbb-uploader": "^1.5.1",
     "input-otp": "1.4.1",
     "jose": "latest",
-    "lucide-react": "^0.454.0",
+    "lucide-react": "^0.541.0",
     "next": "15.2.4",
     "next-auth": "latest",
     "next-themes": "^0.4.4",
